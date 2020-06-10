@@ -4,7 +4,10 @@ import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import Gate from "./components/Gate";
+import store, { persistor } from "./redux/store";
 
 const cacheImages = (images) =>
   images.map((image) => {
@@ -20,7 +23,7 @@ const cacheFonts = (fonts) => fonts.map((font) => Font.loadAsync(font));
 export default function App() {
   const [isReady, setIsReady] = useState(false);
   const handleFinish = () => setIsReady(true);
-  const loadAssets = async () => {
+  const loadAssets = () => {
     const images = [
       require("./assets/loginBg.jpg"),
       "http://logok.org/wp-content/uploads/2014/07/airbnb-logo-belo-219x286.png",
@@ -31,7 +34,11 @@ export default function App() {
     return Promise.all([...imagePromises, ...fontPromises]);
   };
   return isReady ? (
-    <Gate />
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <Gate />
+      </PersistGate>
+    </Provider>
   ) : (
     <AppLoading
       startAsync={loadAssets}

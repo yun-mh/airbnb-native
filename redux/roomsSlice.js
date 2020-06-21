@@ -17,14 +17,7 @@ const roomsSlice = createSlice({
         state.explore.rooms = payload.rooms;
         state.explore.page = 1;
       } else {
-        payload.rooms.forEach((payloadRoom) => {
-          const exists = explore.rooms.find(
-            (savedRoom) => savedRoom.id === payloadRoom.id
-          );
-          if (!exists) {
-            explore.rooms.push(payloadRoom);
-          }
-        });
+        state.explore.rooms = [...state.explore.rooms, ...payload.rooms];
       }
     },
     increasePage(state, action) {

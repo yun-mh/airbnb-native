@@ -5,13 +5,13 @@ const roomsSlice = createSlice({
   name: "rooms",
   initialState: {
     explore: {
+      page: 1,
       rooms: [],
     },
     favs: [],
   },
   reducers: {
     setExploreRooms(state, action) {
-      const { explore } = state;
       const { payload } = action;
       if (payload.page === 1) {
         state.explore.rooms = payload.rooms;
@@ -23,19 +23,50 @@ const roomsSlice = createSlice({
     increasePage(state, action) {
       state.explore.page += 1;
     },
+    setFavs(state, action) {
+      state.favs = action.payload;
+    },
+    setFav(state, action) {
+      const {
+        payload: { roomId },
+      } = action;
+      const room = state.explore.rooms.find((room) => room.id === roomId);
+      if (room) {
+        if (room.is_fav) {
+          room.is_fav = false;
+          state.favs = state.favs.filter((room) => room.id !== roomId);
+        } else {
+          room.is_fav = true;
+          state.favs = [room, ...state.favs];
+        }
+      }
+    },
   },
 });
 
-export const { setExploreRooms, increasePage } = roomsSlice.actions;
+export const {
+  setExploreRooms,
+  increasePage,
+  setFavs,
+  setFav,
+} = roomsSlice.actions;
 
-export const getRooms = (page) => async (dispatch) => {
+export const getRooms = (page) => async (dispatch, getState) => {
+  const {
+    usersReducer: { token },
+  } = getState();
   try {
     const {
       data: { results },
-    } = await api.rooms(page);
-    dispatch(setExploreRooms({ rooms: results, page }));
-  } catch (error) {
-    console.warn(error);
+    } = await api.rooms(page, token);
+    dispatch(
+      setExploreRooms({
+        rooms: results,
+        page,
+      })
+    );
+  } catch (e) {
+    console.warn(e);
   }
 };
 

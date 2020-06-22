@@ -1,11 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
-import {
-  ActivityIndicator,
-  FlatList,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
 import RoomCard from "../../../components/RoomCard";
 
 const Container = styled.View`

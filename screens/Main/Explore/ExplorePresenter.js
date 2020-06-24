@@ -63,6 +63,7 @@ export default ({ rooms, increasePage }) => {
                 photos={item.photos}
                 isFav={item.is_fav}
                 isSuperHost={item.user.superhost}
+                roomObj={item}
               />
             )}
             keyExtractor={(item) => item.id.toString()}

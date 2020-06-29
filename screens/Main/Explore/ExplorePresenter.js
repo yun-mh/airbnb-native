@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components/native";
 import { ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
 import RoomCard from "../../../components/RoomCard";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 const Container = styled.View`
   flex: 1;
@@ -42,6 +44,7 @@ const LoadMoreText = styled.Text`
 `;
 
 export default ({ rooms, increasePage }) => {
+  const navigation = useNavigation();
   return (
     <Container>
       {rooms.length === 0 ? (
@@ -49,7 +52,12 @@ export default ({ rooms, increasePage }) => {
       ) : (
         <>
           <FakeBar>
-            <FakeText>Search...</FakeText>
+            <TouchableWithoutFeedback
+              style={{ width: "100%" }}
+              onPress={() => navigation.navigate("Search")}
+            >
+              <FakeText>Search...</FakeText>
+            </TouchableWithoutFeedback>
           </FakeBar>
           <FlatList
             style={{ width: "100%", marginTop: 30 }}

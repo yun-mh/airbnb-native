@@ -121,6 +121,7 @@ export default ({ route: { params }, navigation }) => {
               },
               altitude: 10 * 150,
               pitch: 25,
+              zoom: 10,
               heading: 0,
             }}
             style={{ height: "100%", width: "100%" }}
